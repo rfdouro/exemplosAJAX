@@ -4,7 +4,6 @@
 <head>
  <meta charset='utf-8'>
  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
- <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
  <title>Page Title</title>
  <meta name='viewport' content='width=device-width, initial-scale=1'>
  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -85,7 +84,7 @@
      };
     },
     getPessoas() {
-     fetch("rfdouro.vps-kinghost.net:8080/services/demos/pessoa", {
+     fetch("http://rfdouro.vps-kinghost.net:8080/services/demos/pessoa", {
       method: "GET"
      }).then((response) => {
       return response.json();
