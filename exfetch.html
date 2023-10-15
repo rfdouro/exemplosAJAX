@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <meta charset='utf-8'>
+ <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+ <title>Page Title</title>
+ <meta name='viewport' content='width=device-width, initial-scale=1'>
+ <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+ <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+ <script src="https://unpkg.com/imask"></script>
+ <style>
+  table tr {
+   cursor: pointer;
+  }
+
+  table tr:hover {
+   background-color: aquamarine;
+  }
+ </style>
+</head>
+
+<body>
+ <div id="app">
+  {{totalPessoas}}
+  <fieldset>
+   <legend>Pessoa</legend>
+   <p><label>Nome: </label><input type="text" id="iptnomepessoa" v-model="pessoa.nome" /></p>
+   <p><label>CPF: </label><input type="text" id="iptcpfpessoa" v-model="pessoa.cpf" /></p>
+   <p><label>Nascimento: </label><input type="text" id="iptnascimentopessoa" v-model="pessoa.nascimento" /></p>
+   <p>
+    <button @click="salvaPessoa">Salvar</button>
+    <button v-show="pessoa.id!=null || pessoa.nome!=null" @click="cancela">Cancelar</button>
+    <button v-show="pessoa.id!=null" @click="deletePessoa">Excluir</button>
+   </p>
+  </fieldset>
+  <table style="width: 100%">
+   <thead>
+    <tr>
+     <th style="width: 50%">Nome</th>
+     <th style="width: 30%">CPF</th>
+     <th>Nascimento</th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr v-for="p in pessoas" @click="seleciona(p.id)">
+     <td>{{p.nome}}</td>
+     <td>{{p.cpf}}</td>
+     <td>{{p.nascimento}}</td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+
+ <script>
+  const vapp = Vue.createApp({
+   data() {
+    return {
+     pessoa: {
+      nome: null,
+      cpf: null,
+      nascimento: null
+     },
+     totalPessoas: -1,
+     pessoas: [],
+    }
+   },
+   mounted() {
+    IMask(document.getElementById('iptcpfpessoa'), {
+     mask: '000.000.000-00'
+    });
+    IMask(document.getElementById('iptnascimentopessoa'), {
+     mask: Date,
+     pattern: 'Y-`m-`dd',
+    });
+    this.getPessoas();
+   },
+   methods: {
+    cancela() {
+     this.pessoa = {
+      nome: null,
+      cpf: null,
+      nascimento: null
+     };
+    },
+    getPessoas() {
+     fetch("http://rfdouro.vps-kinghost.net:8080/services/demos/pessoa", {
+      method: "GET"
+     }).then((response) => {
+      return response.json();
+     }).then((json) => {
+      console.log(json);
+      this.pessoas = json.content;
+      this.totalPessoas = json.totalElements;
+      this.cancela();
+     });
+    },
+    salvaPessoa() {
+     if (this.pessoa.nome != null) {
+      if (this.pessoa.id != null) {
+       fetch("http://rfdouro.vps-kinghost.net:8080/services/demos/pessoa", {
+        method: "PUT",
+        headers: {
+         'Accept': 'application/json',
+         'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.pessoa)
+       }).then((response) => {
+        this.getPessoas();
+       })
+      } else {
+       fetch("http://rfdouro.vps-kinghost.net:8080/services/demos/pessoa", {
+        method: "POST",
+        headers: {
+         'Accept': 'application/json',
+         'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.pessoa)
+       }).then((response) => {
+        this.getPessoas();
+       })
+      }
+     }
+    },
+    seleciona(id) {
+     if (id != null) {
+      fetch(`http://rfdouro.vps-kinghost.net:8080/services/demos/pessoa/${id}`, {
+       method: "GET"
+      }).then((response) => {
+       return response.json();
+      }).then((json) => {
+       console.log(json);
+       this.pessoa = json;
+      });
+     }
+    },
+    deletePessoa() {
+     if (this.pessoa.id != null) {
+      fetch(`http://rfdouro.vps-kinghost.net:8080/services/demos/pessoa/${this.pessoa.id}`, {
+       method: "DELETE",
+       headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+       }
+      }).then((response) => {
+       this.getPessoas();
+      })
+     }
+    }
+   },
+  });
+  vapp.mount("#app");
+ </script>
+</body>
+
+</html>
