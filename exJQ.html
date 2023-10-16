@@ -4,7 +4,7 @@
 <head>
   <meta charset='utf-8'>
   <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-  <title>Page Title</title>
+  <title>JQ AJAX</title>
   <meta name='viewport' content='width=device-width, initial-scale=1'>
   <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -101,21 +101,20 @@
           let _this = this;
           if (this.pessoa.nome != null) {
             if (this.pessoa.id != null) {
-              axios({
-                method: 'PUT',
+              $.ajax({
                 url: 'http://rfdouro.vps-kinghost.net:8080/services/demos/pessoa',
+                method: 'PUT',
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json'
                 },
                 responseType: 'json',
-                data: this.pessoa
-              })
-                .then(function (response) {
-                  _this.getPessoas();
-                });
+                data: JSON.stringify(this.pessoa)
+              }).then(function (response) {
+                _this.getPessoas();
+              });
             } else {
-              axios({
+              $.ajax({
                 method: 'POST',
                 url: 'http://rfdouro.vps-kinghost.net:8080/services/demos/pessoa',
                 headers: {
@@ -123,7 +122,7 @@
                   'Content-Type': 'application/json'
                 },
                 responseType: 'json',
-                data: this.pessoa
+                data: JSON.stringify(this.pessoa)
               })
                 .then(function (response) {
                   _this.getPessoas();
@@ -134,20 +133,20 @@
         seleciona(id) {
           if (id != null) {
             let _this = this;
-            axios({
+            $.ajax({
               method: 'GET',
               url: `http://rfdouro.vps-kinghost.net:8080/services/demos/pessoa/${id}`,
               responseType: 'json'
             })
               .then(function (response) {
-                _this.pessoa = response.data;
+                _this.pessoa = response;
               });
           }
         },
         deletePessoa() {
           if (this.pessoa.id != null) {
             let _this = this;
-            axios({
+            $.ajax({
               method: 'DELETE',
               url: `http://rfdouro.vps-kinghost.net:8080/services/demos/pessoa/${this.pessoa.id}`,
               responseType: 'json'
