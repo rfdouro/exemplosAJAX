@@ -8,5 +8,5 @@ Exemplos de uso de AJAX para consumo de API
 4. Exemplo usando API de CEP
    1. [Com fetch](exCEP.html) 
 
---
+-----
 Os exemplos de 1 a 3 podem não funcionar corretamente pois o endpoint não tem SSL
