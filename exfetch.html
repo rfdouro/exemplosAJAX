@@ -85,7 +85,8 @@
     },
     getPessoas() {
      fetch("http://rfdouro.vps-kinghost.net:8080/services/demos/pessoa", {
-      method: "GET"
+      method: "GET",
+      referrerPolicy: "unsafe_url"
      }).then((response) => {
       return response.json();
      }).then((json) => {
