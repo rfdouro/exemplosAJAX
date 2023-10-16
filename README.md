@@ -3,5 +3,6 @@ Aqui são mostrados exemplos de consumo de API disponibilizada em http://rfdouro
 Exemplos de uso de AJAX para consumo de API
 1. Exemplo usando [fetch API](exfetch.html) 
 2. Exemplo usando [Axios](exaxios.html) 
-3. Exemplo usando API de CEP
+3. Exemplo usando [JQuery](exJQ.html) 
+4. Exemplo usando API de CEP
    1. [Com fetch](exCEP.html) 
