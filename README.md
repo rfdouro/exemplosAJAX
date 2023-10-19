@@ -5,7 +5,7 @@ Exemplos de uso de AJAX para consumo de API
 1. Exemplo usando [fetch API para aplicação de tarefas](exfetch_tarefas.html) 
    1. Usando a API disponível em https://demosbtarefas.onrender.com
 
-Os próximos exemplos são de consumo em http://rfdouro.vps-kinghost.net:8080/services
+Os próximos exemplos são de consumo em <http://rfdouro.vps-kinghost.net:8080/services>
 Como não há SSL não funciona aqui no GithubPages
 
 1. Exemplo usando [fetch API](exfetch.html) 
