@@ -3,7 +3,7 @@ Aqui são mostrados exemplos de consumo de API disponibilizada em http://rfdouro
 Exemplos de uso de AJAX para consumo de API
 
 1. Exemplo usando [fetch API para aplicação de tarefas](exfetch_tarefas.html) 
-   1. Usando a API disponível em https://demosbtarefas.onrender.com
+   1. Usando a API disponível em <https://demosbtarefas.onrender.com>
 
 Os próximos exemplos são de consumo em <http://rfdouro.vps-kinghost.net:8080/services>
 Como não há SSL não funciona aqui no GithubPages
@@ -11,7 +11,9 @@ Como não há SSL não funciona aqui no GithubPages
 1. Exemplo usando [fetch API](exfetch.html) 
 2. Exemplo usando [Axios](exaxios.html) 
 3. Exemplo usando [JQuery](exJQ.html) 
-4. Exemplo usando API de CEP
+
+O próximo exemplo consome a API de <https://viacep.com.br/>
+1. Exemplo usando API de CEP
    1. [Com fetch](exCEP.html) 
 
 -----
