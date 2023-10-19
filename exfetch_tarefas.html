@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <meta charset='utf-8'>
+ <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+ <title>PCadastro de Tarefas</title>
+ <meta name='viewport' content='width=device-width, initial-scale=1'>
+ <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+ <style>
+  table tbody tr {
+   cursor: pointer;
+  }
+
+  table tbody tr:hover {
+   background-color: aquamarine;
+  }
+
+  .splash {
+   position: fixed;
+   width: 100%;
+   height: 100%;
+   z-index: 1000;
+   background-color: #00000050;
+  }
+
+  .splash .splashinner {
+   background-color: white;
+   position: relative;
+   top: 50%;
+   margin: auto;
+   width: 50%;
+   text-align: center;
+  }
+ </style>
+</head>
+
+<body>
+ <div id="app">
+  <div class="splash">
+   <div class="splashinner">Processando...</div>
+  </div>
+  <p>Total: {{tarefas.length}}</p>
+  <fieldset>
+   <legend>Tarefa</legend>
+   <p><label>Descrição: </label><input type="text" id="iptdescricao" v-model="tarefa.descricao" /></p>
+   <p>
+    <button @click="salvaTarefa">Salvar</button>
+    <button v-show="tarefa.id!=null || tarefa.descricao!=null" @click="cancela">Cancelar</button>
+    <button v-show="tarefa.id!=null" @click="deleteTarefa">Excluir</button>
+   </p>
+  </fieldset>
+  <table style="width: 100%">
+   <thead>
+    <tr>
+     <th style="width: 20%">Id</th>
+     <th style="width: 80%">Descrição</th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr v-for="p in tarefas" @click="seleciona(p)">
+     <td>{{p.id}}</td>
+     <td>{{p.descricao}}</td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+
+ <script>
+  const vapp = Vue.createApp({
+   data() {
+    return {
+     tarefa: {
+      descricao: null,
+     },
+     tarefas: [],
+    }
+   },
+   mounted() {
+    this.getTarefas();
+   },
+   methods: {
+    cancela() {
+     this.tarefa = {
+      descricao: null,
+      cpf: null,
+      nascimento: null
+     };
+     document.getElementsByClassName("splash")[0].style.display = 'none';
+    },
+    getTarefas() {
+     document.getElementsByClassName("splash")[0].style.display = 'block';
+     fetch("https://demosbtarefas.onrender.com/tarefa", {
+      method: "GET"
+     }).then((response) => {
+      return response.json();
+     }).then((json) => {
+      console.log(json);
+      this.tarefas = json;
+      this.cancela();
+     });
+    },
+    salvaTarefa() {
+     if (this.tarefa.descricao != null) {
+      if (this.tarefa.id != null) {
+       document.getElementsByClassName("splash")[0].style.display = 'block';
+       fetch("https://demosbtarefas.onrender.com/tarefa", {
+        method: "PUT",
+        headers: {
+         'Accept': 'application/json',
+         'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.tarefa)
+       }).then((response) => {
+        this.getTarefas();
+       })
+      } else {
+       document.getElementsByClassName("splash")[0].style.display = 'block';
+       fetch("https://demosbtarefas.onrender.com/tarefa", {
+        method: "POST",
+        headers: {
+         'Accept': 'application/json',
+         'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(this.tarefa)
+       }).then((response) => {
+        this.getTarefas();
+       })
+      }
+     }
+    },
+    seleciona(tarefa) {
+     if (tarefa != null) {
+      this.tarefa = tarefa;
+     }
+    },
+    deleteTarefa() {
+     if (this.tarefa.id != null) {
+      document.getElementsByClassName("splash")[0].style.display = 'block';
+      fetch(`https://demosbtarefas.onrender.com/tarefa/${this.tarefa.id}`, {
+       method: "DELETE",
+       headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+       }
+      }).then((response) => {
+       this.getTarefas();
+      })
+     }
+    }
+   },
+  });
+  vapp.mount("#app");
+ </script>
+</body>
+
+</html>

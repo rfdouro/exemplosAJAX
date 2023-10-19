@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <meta charset='utf-8'>
+ <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+ <title>JQ AJAX</title>
+ <meta name='viewport' content='width=device-width, initial-scale=1'>
+ <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+ <style>
+  nav ul {
+   list-style-type: none;
+   margin: 0;
+   padding: 0;
+   overflow: hidden;
+  }
+
+  nav li {
+   float: left;
+  }
+
+  nav li a {
+   display: block;
+   padding: 8px;
+   background-color: #dddddd;
+  }
+
+  table * {
+   border: 1px solid #000;
+  }
+
+  table {
+   width: 100%;
+  }
+
+  table td {
+   width: 33%;
+   vertical-align: top;
+  }
+ </style>
+</head>
+
+<body>
+ <div id="app">
+  <nav>
+   <ul>
+    <li><a href="#" @click="carregaPagina">Página</a></li>
+    <li><a href="#" @click="carregaImagem">Imagem</a></li>
+    <li><a href="#" @click="carregaJson">JSON</a></li>
+   </ul>
+  </nav>
+
+  <table>
+   <tbody>
+    <tr>
+     <td id="cpagina">
+
+     </td>
+     <td>
+      <img id="cimagem" />
+     </td>
+     <td id="cjson">
+
+     </td>
+    </tr>
+   </tbody>
+  </table>
+
+ </div>
+
+ <script>
+  const vapp = Vue.createApp({
+   data() {
+    return {
+
+    }
+   },
+   mounted() {
+
+   },
+   methods: {
+    getxmlhttp() {
+     let xmlhttp = null;
+     if (window.XMLHttpRequest) {
+      xmlhttp = new XMLHttpRequest();
+     } else if (window.ActiveXObject) {
+      xmlhttp = new ActiveXObject(`Microsoft.XMLHTTP`);
+     } else { alert(`Seu navegador não tem suporte para AJAX`); }
+     return xmlhttp;
+    },
+    carregaPagina() {
+     let xmlhttp = this.getxmlhttp();
+     if (xmlhttp) {
+      xmlhttp.open("GET", "pagina.html", true);
+      xmlhttp.onreadystatechange = () => {
+       console.log(xmlhttp);
+       if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+        let response = xmlhttp.responseText;
+        document.getElementById("cpagina").innerHTML = response;
+       }
+      }
+      xmlhttp.send(null);
+     } else {
+      console.log('ERRO');
+     }
+    },
+    carregaImagem() {
+     let xmlhttp = this.getxmlhttp();
+     if (xmlhttp) {
+      xmlhttp.open("GET", "https://picsum.photos/200", true);
+      xmlhttp.responseType = 'blob';
+      xmlhttp.onreadystatechange = () => {
+       if (xmlhttp.readyState == 4) {
+        var imageURL = window.URL.createObjectURL(xmlhttp.response);
+        document.getElementById("cimagem").src = imageURL;
+       }
+      }
+      xmlhttp.send(null);
+     } else {
+      console.log('ERRO');
+     }
+    },
+    carregaJson() {
+     let xmlhttp = this.getxmlhttp();
+     if (xmlhttp) {
+      xmlhttp.open("GET", "large-file.json", true);
+      xmlhttp.onreadystatechange = () => {
+       if (xmlhttp.readyState == 4) {
+        let response = xmlhttp.responseText;
+        document.getElementById("cjson").innerText = response;
+       }
+      }
+      xmlhttp.send(null);
+     } else {
+      console.log('ERRO');
+     }
+    }
+   },
+  });
+  vapp.mount("#app");
+ </script>
+</body>
+
+</html>

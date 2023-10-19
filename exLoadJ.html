@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+ <meta charset='utf-8'>
+ <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+ <title>JQ AJAX</title>
+ <meta name='viewport' content='width=device-width, initial-scale=1'>
+ <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+ <script src="https://unpkg.com/jquery@3.7.1/dist/jquery.min.js"></script>
+ <style>
+  nav ul {
+   list-style-type: none;
+   margin: 0;
+   padding: 0;
+   overflow: hidden;
+  }
+
+  nav li {
+   float: left;
+  }
+
+  nav li a {
+   display: block;
+   padding: 8px;
+   background-color: #dddddd;
+  }
+
+  table * {
+   border: 1px solid #000;
+  }
+
+  table {
+   width: 100%;
+  }
+
+  table td {
+   width: 33%;
+   vertical-align: top;
+  }
+ </style>
+</head>
+
+<body>
+ <div id="app">
+  <nav>
+   <ul>
+    <li><a href="#" @click="carregaPagina">Página</a></li>
+    <li><a href="#" @click="carregaImagem">Imagem</a></li>
+    <li><a href="#" @click="carregaJson">JSON</a></li>
+   </ul>
+  </nav>
+
+  <table>
+   <tbody>
+    <tr>
+     <td id="cpagina">
+
+     </td>
+     <td>
+      <img id="cimagem" />
+     </td>
+     <td id="cjson">
+
+     </td>
+    </tr>
+   </tbody>
+  </table>
+
+ </div>
+
+ <script>
+  const vapp = Vue.createApp({
+   data() {
+    return {
+
+    }
+   },
+   mounted() {
+
+   },
+   methods: {
+    carregaPagina() {
+     $.ajax({
+      method: 'GET',
+      url: "pagina.html"
+     }).then((r, s, b) => {
+      console.log(r, s, b);
+      if (b.status == 200) {
+       $("#cpagina").html(r);
+      }
+     });
+    },
+    carregaImagem() {
+
+     $.ajax({
+      method: 'GET',
+      url: "https://picsum.photos/200",
+      xhrFields: {
+       responseType: 'blob'
+      }
+     }).then((r, s, b) => {
+      console.log(r);
+      let imageURL = window.URL.createObjectURL(r);
+      document.getElementById("cimagem").src = imageURL;
+     });
+    },
+    carregaJson() {
+     $.ajax({
+      method: 'GET',
+      url: "large-file.json",
+      dataType: "json"
+     }).then((r, s, b) => {
+      console.log(r, s, b);
+      if (b.status == 200) {
+       $("#cjson").text(JSON.stringify(r));
+      }
+     });
+    }
+   },
+  });
+  vapp.mount("#app");
+ </script>
+</body>
+
+</html>
